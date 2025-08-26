@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 71864524e3d65404b83915f3fbf05f2e
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 236092
+  packageName: Fuji Sunrise / Modern Japan Landscape
+  packageVersion: 1.0
+  assetPath: Assets/Fuji Sunrise/Pipelines/New Universal Render Pipeline Asset_Renderer.asset
+  uploadId: 601640
