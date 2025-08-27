@@ -10,15 +10,21 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpingPower = 16f;
     private bool isFacingRight = true;
 
+    [SerializeField] float coyoteTime = .2f;
+    private float coyoteTimeCounter;
+
+    private float jumpBufferTime = .2f;
+    private float jumpBufferCounter;
+
     private bool isWallSliding;
     [SerializeField] float wallSlidingSpeed = 2f;
 
     private bool isWallJumping;
     private float wallJumpingDirection;
-    private float wallJumpingTime = .2f;
+    [SerializeField] float wallJumpingTime = .2f;
     private float wallJumpingCounter;
-    private float wallJumpingDuraction = .4f;
-    private Vector2 wallJumpingPower = new Vector2(8f, 16f);
+    [SerializeField] float wallJumpingDuraction = .4f;
+    [SerializeField] Vector2 wallJumpingPower = new Vector2(8f, 16f);
     
 
     private bool canDash = true;
@@ -41,18 +47,40 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
+
+        if (IsGrounded())
+        {
+            coyoteTimeCounter = coyoteTime;
+        }
+        else
+        {
+            coyoteTimeCounter -= Time.deltaTime;
+        }
+
+        if (Input.GetButtonDown("Jump"))
+        {
+            jumpBufferCounter = jumpBufferTime;
+        }
+        else
+        {
+            jumpBufferCounter -= Time.deltaTime;
+        }
         
         
         horizontal = Input.GetAxis("Horizontal");
 
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+        if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
+
+            jumpBufferCounter = 0f;
         }
 
         if (Input.GetButtonUp("Jump") && rb.linearVelocity.y > 0f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * .5f);
+
+            coyoteTimeCounter = 0f;
         }
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && canDash)
