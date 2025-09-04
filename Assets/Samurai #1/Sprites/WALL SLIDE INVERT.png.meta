@@ -1,16 +1,16 @@
 fileFormatVersion: 2
-guid: 39285aad05f66724794320f64f262546
+guid: 3b74f37108021f1419466a0895fd2ea5
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4380866032584714435
-    second: JUMP-FALL_0
+      213: 8521705878472604649
+    second: WALL SLIDE INVERT_0
   - first:
-      213: 3098360952774597818
-    second: JUMP-FALL_1
+      213: -4201799276708978034
+    second: WALL SLIDE INVERT_1
   - first:
-      213: -3744631612321063829
-    second: JUMP-FALL_2
+      213: 1780462733406002054
+    second: WALL SLIDE INVERT_2
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -106,13 +106,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: JUMP-FALL_0
+      name: WALL SLIDE INVERT_0
       rect:
         serializedVersion: 2
-        x: 31
-        y: 15
-        width: 28
-        height: 38
+        x: 32
+        y: 25
+        width: 23
+        height: 47
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -121,20 +121,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d37963fdd890433c0800000000000000
-      internalID: -4380866032584714435
+      spriteID: 9ebb7b6b85e234670800000000000000
+      internalID: 8521705878472604649
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: JUMP-FALL_1
+      name: WALL SLIDE INVERT_1
       rect:
         serializedVersion: 2
-        x: 127
-        y: 15
-        width: 28
-        height: 38
+        x: 128
+        y: 25
+        width: 23
+        height: 45
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -143,20 +143,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: abc1218eed69ffa20800000000000000
-      internalID: 3098360952774597818
+      spriteID: e82a446e1d530b5c0800000000000000
+      internalID: -4201799276708978034
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: JUMP-FALL_2
+      name: WALL SLIDE INVERT_2
       rect:
         serializedVersion: 2
-        x: 223
-        y: 15
-        width: 28
-        height: 38
+        x: 224
+        y: 25
+        width: 23
+        height: 43
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -165,8 +165,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: b6c97e47365680cc0800000000000000
-      internalID: -3744631612321063829
+      spriteID: 68b5c783c6975b810800000000000000
+      internalID: 1780462733406002054
       vertices: []
       indices: 
       edges: []
@@ -185,9 +185,9 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      JUMP-FALL_0: -4380866032584714435
-      JUMP-FALL_1: 3098360952774597818
-      JUMP-FALL_2: -3744631612321063829
+      WALL SLIDE INVERT_0: 8521705878472604649
+      WALL SLIDE INVERT_1: -4201799276708978034
+      WALL SLIDE INVERT_2: 1780462733406002054
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
