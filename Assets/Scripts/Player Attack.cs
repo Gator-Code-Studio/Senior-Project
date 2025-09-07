@@ -6,13 +6,20 @@ public class PlayerAttack : MonoBehaviour
     // where shuriken spawns from
     public Transform handAnchor;            
     public GameObject shurikenPrefab;       
-    public GameObject katanaSlashPrefab;
     public PlayerMovement movement;
+    public KatanaHitbox katanaHitbox;
 
     [Header("Settings")]
 
     // offset from player’s hand
-    public float shurikenSpawnOffset = 0.4f;  
+    public float shurikenSpawnOffset = 0.4f;
+
+    private Animator anim;
+
+    void Awake()
+    {
+        anim = GetComponent<Animator>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -20,16 +27,25 @@ public class PlayerAttack : MonoBehaviour
         // Throw shuriken when pressing F
         if (Input.GetKeyDown(KeyCode.F))
         {
-            ThrowShuriken();
+            if (anim != null)
+            {
+                anim.SetTrigger("Throw");
+            }
+        }
+
+        // Reset speed back to normal when Throw is not playing
+        if (!anim.GetCurrentAnimatorStateInfo(0).IsName("Throw"))
+        {
+            anim.speed = 1f;
         }
 
         // Katana slash when pressing J
         if (Input.GetKeyDown(KeyCode.J))
         {
-            SlashKatana();
+            if (anim != null) anim.SetTrigger("Slash");
         }
     }
-    private void ThrowShuriken()
+    private void SpawnShuriken()
     {
         if (shurikenPrefab == null) return;
 
@@ -52,21 +68,13 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-    private void SlashKatana()
+    public void EnableHitbox()
     {
-        if (katanaSlashPrefab == null) return;
+        if (katanaHitbox != null) katanaHitbox.EnableHitbox();
+    }
 
-        bool right = (movement == null || movement.IsFacingRight());
-
-        Vector3 spawnPos = handAnchor != null ? handAnchor.position : transform.position;
-        GameObject go = Instantiate(katanaSlashPrefab, spawnPos, Quaternion.identity, transform);
-
-        // If facing left, flip
-        if (!right)
-        {
-            Vector3 scale = go.transform.localScale;
-            scale.x = Mathf.Abs(scale.x) * -1f;
-            go.transform.localScale = scale;
-        }
+    public void DisableHitbox()
+    {
+        if (katanaHitbox != null) katanaHitbox.DisableHitbox();
     }
 }
