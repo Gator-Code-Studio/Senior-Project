@@ -29,6 +29,11 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    public bool IsFacingRight()
+    {
+        return isFacingRight;
+    }
+
     private void FixedUpdate()
     {
         rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
