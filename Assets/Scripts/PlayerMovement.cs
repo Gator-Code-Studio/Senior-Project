@@ -34,6 +34,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float dashingPower = 24f;
     [SerializeField] float dashingTime = .2f;
     [SerializeField] float dashingCooldown = 1f;
+    [SerializeField] private float diagonalVerticalScale = .6f; 
+    [SerializeField] private float verticalDashScale = 0.8f; 
+    [SerializeField] private float diagonalDashScale = 0.9f;
+
+    private bool wasGrounded;
+
+
     
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
@@ -57,19 +64,29 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isDashing)
-        {
-            return;
-        }
+        
+        bool grounded = IsGrounded();
 
-        if (IsGrounded())
+        if (grounded)
         {
             coyoteTimeCounter = coyoteTime;
+            if (!wasGrounded)
+            {
+                doubleJump = false; // reset only when you just landed
+            }
         }
         else
         {
             coyoteTimeCounter -= Time.deltaTime;
         }
+
+        
+        
+        if (isDashing)
+        {
+            return;
+        }
+        
         
         if (Input.GetButtonDown("Jump"))
         {
@@ -85,15 +102,22 @@ public class PlayerMovement : MonoBehaviour
 
         if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
         {
-            
                 rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
-                
-                doubleJump = !doubleJump;
-
+                doubleJump = true;
                 jumpBufferCounter = 0f;
-
-
         }
+        
+        if (jumpBufferCounter > 0f && !IsGrounded() && doubleJump && !isWallSliding)
+        {
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
+            doubleJump = false;
+            jumpBufferCounter = 0f;
+        }
+
+        wasGrounded = grounded;
+        
+        if (Input.GetButtonUp("Jump")) jumpBufferCounter = 0f;
+
 
         if (Input.GetButtonUp("Jump") && rb.linearVelocity.y > 0f)
         {
@@ -227,6 +251,7 @@ public class PlayerMovement : MonoBehaviour
             isWallJumping = true;
             rb.linearVelocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
             wallJumpingCounter = 0f;
+            doubleJump = true;
 
             if (transform.localScale.x != wallJumpingDirection)
             {
@@ -249,15 +274,59 @@ public class PlayerMovement : MonoBehaviour
     {
         canDash = false;
         isDashing = true;
+
+        float x = Input.GetAxisRaw("Horizontal");
+        float y = Input.GetAxisRaw("Vertical");
+
+        Vector2 dir = new Vector2(x, y);
+        if (dir.sqrMagnitude > 0f)
+        {
+            dir = dir.normalized;
+        }
+        else
+        {
+            dir = new Vector2(transform.localScale.x, 0f);
+        }
+
+        bool hasX = Mathf.Abs(x) > 0f;
+        bool hasY = Mathf.Abs(y) > 0f;
+
+        if (hasX && hasY)
+        {
+            dir.y *= diagonalVerticalScale; // control vertical component
+            dir = dir.normalized;
+        }
+
+        if (IsGrounded() && dir.y < 0f)
+        {
+            dir.y = 0f;
+        }
+
+        float power = dashingPower;
+        if (!hasX && hasY)
+        {
+            power *= verticalDashScale;
+        }
+        else if (hasX && hasY)
+        {
+            power *= diagonalDashScale;
+        }
+
         float originalGravity = rb.gravityScale;
         rb.gravityScale = 0f;
-        rb.linearVelocity = new Vector2(transform.localScale.x * dashingPower, 0f);
+        rb.linearVelocity = dir * power;
         tr.emitting = true;
+
         yield return new WaitForSeconds(dashingTime);
+
         tr.emitting = false;
         rb.gravityScale = originalGravity;
         isDashing = false;
+
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
+
+
+
 }
