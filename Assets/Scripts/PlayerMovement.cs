@@ -5,66 +5,60 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    // Movement
     private float horizontal;
     [SerializeField] float speed = 8f;
     [SerializeField] float jumpingPower = 16f;
     private bool isFacingRight = true;
 
+    // Jump Timing
     [SerializeField] float coyoteTime = .2f;
     private float coyoteTimeCounter;
-
     private bool doubleJump;
-
     private float jumpBufferTime = .2f;
     private float jumpBufferCounter;
 
+    // Wall
     private bool isWallSliding;
     [SerializeField] float wallSlidingSpeed = 2f;
-
     private bool isWallJumping;
     private float wallJumpingDirection;
     [SerializeField] float wallJumpingTime = .2f;
     private float wallJumpingCounter;
     [SerializeField] float wallJumpingDuraction = .4f;
     [SerializeField] Vector2 wallJumpingPower = new Vector2(8f, 16f);
-    
 
+    // Dash
     private bool canDash = true;
     private bool isDashing;
     [SerializeField] float dashingPower = 24f;
     [SerializeField] float dashingTime = .2f;
     [SerializeField] float dashingCooldown = 1f;
-    [SerializeField] private float diagonalVerticalScale = .6f; 
-    [SerializeField] private float verticalDashScale = 0.8f; 
+    [SerializeField] private float diagonalVerticalScale = .6f;
+    [SerializeField] private float verticalDashScale = 0.8f;
     [SerializeField] private float diagonalDashScale = 0.9f;
 
     private bool wasGrounded;
 
-
-    
+    // Refs
     [SerializeField] private Rigidbody2D rb;
     [SerializeField] private Transform groundCheck;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private TrailRenderer tr;
     [SerializeField] private Transform wallCheck;
     [SerializeField] private LayerMask wallLayer;
-    
     [SerializeField] private Animator animator;
 
-    
-    
+    // Animator state
     private bool isRunning;
     private bool isJumping;
     private bool isJumpingUp;
     private bool isJumpingDown;
     private bool movingKeyPressed;
-    
 
-    // ToDo: Double Jumping, Portals
-    // Update is called once per frame
+    // Update
     void Update()
     {
-        
         bool grounded = IsGrounded();
 
         if (grounded)
@@ -80,14 +74,11 @@ public class PlayerMovement : MonoBehaviour
             coyoteTimeCounter -= Time.deltaTime;
         }
 
-        
-        
         if (isDashing)
         {
             return;
         }
-        
-        
+
         if (Input.GetButtonDown("Jump"))
         {
             jumpBufferCounter = jumpBufferTime;
@@ -96,17 +87,16 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpBufferCounter -= Time.deltaTime;
         }
-        
-        
+
         horizontal = Input.GetAxis("Horizontal");
 
         if (coyoteTimeCounter > 0f && jumpBufferCounter > 0f)
         {
-                rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
-                doubleJump = true;
-                jumpBufferCounter = 0f;
+            rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
+            doubleJump = true;
+            jumpBufferCounter = 0f;
         }
-        
+
         if (jumpBufferCounter > 0f && !IsGrounded() && doubleJump && !isWallSliding)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
@@ -115,14 +105,12 @@ public class PlayerMovement : MonoBehaviour
         }
 
         wasGrounded = grounded;
-        
-        if (Input.GetButtonUp("Jump")) jumpBufferCounter = 0f;
 
+        if (Input.GetButtonUp("Jump")) jumpBufferCounter = 0f;
 
         if (Input.GetButtonUp("Jump") && rb.linearVelocity.y > 0f)
         {
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, rb.linearVelocity.y * .5f);
-
             coyoteTimeCounter = 0f;
         }
 
@@ -138,9 +126,10 @@ public class PlayerMovement : MonoBehaviour
             Flip();
         }
 
-        movingKeyPressed = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow);
-        
-        
+        movingKeyPressed =
+            Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D) ||
+            Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.RightArrow);
+
         isRunning = movingKeyPressed && IsGrounded() && !isDashing && !isWallSliding;
         isJumping = !IsGrounded() && rb.linearVelocity.y > 0f || isWallJumping;
 
@@ -154,7 +143,6 @@ public class PlayerMovement : MonoBehaviour
             isJumpingUp = !IsGrounded() && rb.linearVelocity.y > 0f;
             isJumpingDown = !IsGrounded() && rb.linearVelocity.y < 0f;
         }
-        
 
         isJumpingUp = !IsGrounded() && rb.linearVelocity.y > 0f;
         isJumpingDown = !IsGrounded() && rb.linearVelocity.y < 0f;
@@ -168,7 +156,6 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("isDashing", isDashing);
             animator.SetBool("isWallSliding", isWallSliding);
         }
-
     }
 
     private void FixedUpdate()
@@ -177,7 +164,7 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
-        
+
         if (movingKeyPressed && !isWallSliding)
         {
             rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
@@ -215,8 +202,11 @@ public class PlayerMovement : MonoBehaviour
         if (IsWalled() && !IsGrounded() && horizontal != 0f)
         {
             isWallSliding = true;
-            rb.linearVelocity = new Vector2(rb.linearVelocity.x, Mathf.Clamp(rb.linearVelocity.y, -wallSlidingSpeed, float.MaxValue));
-            
+            rb.linearVelocity = new Vector2(
+                rb.linearVelocity.x,
+                Mathf.Clamp(rb.linearVelocity.y, -wallSlidingSpeed, float.MaxValue)
+            );
+
             if ((isFacingRight && horizontal < 0f) || (!isFacingRight && horizontal > 0f))
             {
                 isFacingRight = !isFacingRight;
@@ -238,7 +228,6 @@ public class PlayerMovement : MonoBehaviour
             isWallJumping = false;
             wallJumpingDirection = -transform.localScale.x;
             wallJumpingCounter = wallJumpingTime;
-            
             CancelInvoke(nameof(StopWallJumping));
         }
         else
@@ -249,7 +238,10 @@ public class PlayerMovement : MonoBehaviour
         if (Input.GetButtonDown("Jump") && wallJumpingCounter > 0f)
         {
             isWallJumping = true;
-            rb.linearVelocity = new Vector2(wallJumpingDirection * wallJumpingPower.x, wallJumpingPower.y);
+            rb.linearVelocity = new Vector2(
+                wallJumpingDirection * wallJumpingPower.x,
+                wallJumpingPower.y
+            );
             wallJumpingCounter = 0f;
             doubleJump = true;
 
@@ -268,8 +260,7 @@ public class PlayerMovement : MonoBehaviour
     {
         isWallJumping = false;
     }
-    
-    
+
     private IEnumerator Dash()
     {
         canDash = false;
@@ -293,7 +284,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (hasX && hasY)
         {
-            dir.y *= diagonalVerticalScale; // control vertical component
+            dir.y *= diagonalVerticalScale;
             dir = dir.normalized;
         }
 
@@ -326,7 +317,4 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(dashingCooldown);
         canDash = true;
     }
-
-
-
 }
