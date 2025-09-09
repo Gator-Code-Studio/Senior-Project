@@ -15,6 +15,7 @@ public class Shuriken : MonoBehaviour
     private int _dir = 1;
     private SpriteRenderer _sr;
     private Rigidbody2D _rb;
+
     private Color _baseColor;
 
     public void Fire(int direction)
@@ -22,6 +23,7 @@ public class Shuriken : MonoBehaviour
         _dir = Mathf.Sign(direction) >= 0 ? 1 : -1;
         _startPos = transform.position;        
         ResetVisual();
+        
     }
    
     void Awake()
@@ -58,7 +60,7 @@ public class Shuriken : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Don’t destroy on hitting the player
+        // Donï¿½t destroy on hitting the player
         if (!other.CompareTag("Player"))
             Destroy(gameObject);
     }
