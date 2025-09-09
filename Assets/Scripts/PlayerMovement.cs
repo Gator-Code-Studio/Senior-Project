@@ -158,6 +158,11 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    public bool IsFacingRight()
+    {
+        return isFacingRight;
+    }
+
     private void FixedUpdate()
     {
         if (isDashing)
