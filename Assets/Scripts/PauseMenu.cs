@@ -6,7 +6,7 @@ public class PauseMenu : MonoBehaviour
 {
     public GameObject container;
 
-    private void Start()
+    void Start()
     {
         Time.timeScale = 1;
     }
