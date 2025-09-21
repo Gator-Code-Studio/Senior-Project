@@ -60,13 +60,19 @@ public class Shuriken : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Don�t destroy on hitting the player
-        if (!other.CompareTag("Player"))
-            Destroy(gameObject);
+        if (other.CompareTag("Player")) return;
+
+        var damageable = other.GetComponent<IDamageable>();
+        if (damageable != null)
+        {
+            damageable.TakeHit(1);  
+        }
+
+        Destroy(gameObject);
     }
 
     private void ResetVisual()
     {
-        if (_sr != null) _sr.color = _baseColor;  // reset alpha when re-used
+        if (_sr != null) _sr.color = _baseColor;  
     }
 }
