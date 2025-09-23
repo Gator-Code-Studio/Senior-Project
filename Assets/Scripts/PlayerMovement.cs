@@ -56,10 +56,31 @@ public class PlayerMovement : MonoBehaviour
     private bool isJumpingDown;
     private bool movingKeyPressed;
 
+
+    AudioManager audioManager;
+    private void Awake()
+    {
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+    private void PlayLandingSound()
+    {
+        bool grounded = IsGrounded();
+
+        
+        if (grounded && !wasGrounded)
+        {
+            audioManager.PlaySFX(audioManager.land);
+        }
+
+        wasGrounded = grounded;
+    }
+
     // Update
     void Update()
     {
+
         bool grounded = IsGrounded();
+        PlayLandingSound();
 
         if (grounded)
         {
@@ -95,6 +116,7 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
             doubleJump = true;
             jumpBufferCounter = 0f;
+            audioManager.PlaySFX(audioManager.jump);
         }
 
         if (jumpBufferCounter > 0f && !IsGrounded() && doubleJump && !isWallSliding)
@@ -102,6 +124,7 @@ public class PlayerMovement : MonoBehaviour
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpingPower);
             doubleJump = false;
             jumpBufferCounter = 0f;
+            audioManager.PlaySFX(audioManager.jump);
         }
 
         wasGrounded = grounded;
@@ -199,8 +222,16 @@ public class PlayerMovement : MonoBehaviour
     private bool IsWalled()
     {
         Console.Write("IsWalled");
-        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
+        return Physics2D.OverlapCircle(wallCheck.position, 0.01f, wallLayer);
     }
+    
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(wallCheck.position, 0.2f);
+
+    }
+
 
     private void WallSlide()
     {
