@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LadderMovement : MonoBehaviour
 {
-    [SerializeField] private float speed = 2f;
+   /* [SerializeField] private float speed = 2f;
     private bool isLadder;
 
     public bool IsClimbing { get; private set; }
@@ -30,5 +30,5 @@ public class LadderMovement : MonoBehaviour
             IsClimbing = false;
             VerticalInput = 0f;
         }
-    }
+    }*/
 }
