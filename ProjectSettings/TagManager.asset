@@ -6,6 +6,7 @@ TagManager:
   tags:
   - OneWayPlatform
   - Enemy
+  - Ladder
   layers:
   - Default
   - TransparentFX
