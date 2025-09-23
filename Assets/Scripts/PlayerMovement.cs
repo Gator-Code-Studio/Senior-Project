@@ -199,8 +199,16 @@ public class PlayerMovement : MonoBehaviour
     private bool IsWalled()
     {
         Console.Write("IsWalled");
-        return Physics2D.OverlapCircle(wallCheck.position, 0.2f, wallLayer);
+        return Physics2D.OverlapCircle(wallCheck.position, 0.01f, wallLayer);
     }
+    
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(wallCheck.position, 0.2f);
+
+    }
+
 
     private void WallSlide()
     {
