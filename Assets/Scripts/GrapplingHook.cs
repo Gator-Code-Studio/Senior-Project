@@ -23,7 +23,6 @@ public class GrapplingHook : MonoBehaviour
 
     void Update()
     {
-        // Start Grapple
         if (Input.GetMouseButtonDown(0))
         {
             RaycastHit2D hit = Physics2D.Raycast(
@@ -64,12 +63,9 @@ public class GrapplingHook : MonoBehaviour
         if (isGrappling)
         {
             rope.SetPosition(1, transform.position);
-
-            // --- NEW LOGIC ---
-            // Reel in the rope by decreasing the joint's distance over time
+            
             joint.distance = Mathf.MoveTowards(joint.distance, 1f, grappleSpeed * Time.deltaTime);
-            // We move towards 1f instead of 0f to prevent the player from getting stuck inside the grapple point
-            // --- END NEW LOGIC ---
+
         }
     }
 }
