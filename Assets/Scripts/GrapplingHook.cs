@@ -65,9 +65,11 @@ public class GrapplingHook : MonoBehaviour
         {
             rope.SetPosition(1, transform.position);
 
-
+            // --- NEW LOGIC ---
+            // Reel in the rope by decreasing the joint's distance over time
             joint.distance = Mathf.MoveTowards(joint.distance, 1f, grappleSpeed * Time.deltaTime);
-
+            // We move towards 1f instead of 0f to prevent the player from getting stuck inside the grapple point
+            // --- END NEW LOGIC ---
         }
     }
 }
