@@ -192,14 +192,19 @@ public class PlayerMovement : MonoBehaviour
         {
             return;
         }
-
-        if (movingKeyPressed && !isWallSliding)
+        // Only control horizontal movement if we are NOT wall jumping
+        if (!isWallJumping)
         {
-            rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
-        }
-        else
-        {
-            rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            if (movingKeyPressed && !isWallSliding)
+            {
+                // Apply movement if keys are pressed
+                rb.linearVelocity = new Vector2(horizontal * speed, rb.linearVelocity.y);
+            }
+            else
+            {
+                // Stop movement if no keys are pressed
+                rb.linearVelocity = new Vector2(0f, rb.linearVelocity.y);
+            }
         }
     }
 
@@ -235,21 +240,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void WallSlide()
     {
-        if (IsWalled() && !IsGrounded() && horizontal != 0f)
+        if (IsWalled() && !IsGrounded())
         {
             isWallSliding = true;
             rb.linearVelocity = new Vector2(
                 rb.linearVelocity.x,
                 Mathf.Clamp(rb.linearVelocity.y, -wallSlidingSpeed, float.MaxValue)
             );
-
-            if ((isFacingRight && horizontal < 0f) || (!isFacingRight && horizontal > 0f))
-            {
-                isFacingRight = !isFacingRight;
-                Vector3 localScale = transform.localScale;
-                localScale.x *= -1f;
-                transform.localScale = localScale;
-            }
+            
         }
         else
         {

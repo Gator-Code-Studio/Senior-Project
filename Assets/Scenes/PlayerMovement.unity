@@ -635,7 +635,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2734692247756106183, guid: 0a2ba706b164a7542865781766653564, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.105100006
+      value: 0.142
       objectReference: {fileID: 0}
     - target: {fileID: 2734692247756106183, guid: 0a2ba706b164a7542865781766653564, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1190,6 +1190,7 @@ GameObject:
   - component: {fileID: 597107300}
   - component: {fileID: 597107301}
   - component: {fileID: 597107302}
+  - component: {fileID: 597107303}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -1215,7 +1216,7 @@ MonoBehaviour:
   wallSlidingSpeed: 0.3
   wallJumpingTime: 0.2
   wallJumpingDuraction: 0.4
-  wallJumpingPower: {x: 6, y: 3.2}
+  wallJumpingPower: {x: 6, y: 4}
   dashingPower: 4.7
   dashingTime: 0.15
   dashingCooldown: 1
@@ -1557,6 +1558,19 @@ MonoBehaviour:
   isPlayer: 1
   hurtInvulnTime: 0.3
   deathVFX: {fileID: 0}
+--- !u!114 &597107303
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 597107293}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c84d1e711dcacd43987049f240d2973, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerOneWayPlatform
+  playerCollider: {fileID: 597107295}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
